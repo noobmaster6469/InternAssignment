@@ -11,9 +11,6 @@ export const getCategories = async (req, res) => {
     }
 
     const categories = await Category.find({ store: storeDoc._id });
-    // const categories = await Category.find({ store: storeDoc._id }).populate(
-    //   "store"
-    // );
 
     res.status(200).json(categories);
   } catch (err) {

@@ -23,22 +23,42 @@ export const useOrderStore = create((set, get) => ({
     }
   },
 
-  addToCart: (productVariation, store) => {
+  addToCart: (image, name, price, store) => {
+    const heh = {
+      image,
+      name,
+      price,
+    };
     if (store === "a") {
       const { ordera } = get();
-      const updated = [...ordera, productVariation];
+      const updated = [...ordera, heh];
       set({ ordera: updated, order: updated });
       localStorage.setItem("ordera", JSON.stringify(updated));
     } else {
       const { orderb } = get();
-      const updated = [...orderb, productVariation];
+      const updated = [...orderb, heh];
       set({ orderb: updated, order: updated });
       localStorage.setItem("orderb", JSON.stringify(updated));
     }
   },
 
-  removeFromCart: (variationId) => {
-    const { order } = get();
-    set({ order: order.filter((item) => item._id !== variationId) });
+  removeFromCart: (image, name, price, store) => {
+    const { ordera, orderb } = get();
+    const match = (item) =>
+      item.image === image && item.name === name && item.price === price;
+
+    if (store === "a") {
+      const updated = [...ordera];
+      const index = updated.findIndex(match);
+      if (index !== -1) updated.splice(index, 1);
+      set({ ordera: updated, order: updated });
+      localStorage.setItem("ordera", JSON.stringify(updated));
+    } else {
+      const updated = [...orderb];
+      const index = updated.findIndex(match);
+      if (index !== -1) updated.splice(index, 1);
+      set({ orderb: updated, order: updated });
+      localStorage.setItem("orderb", JSON.stringify(updated));
+    }
   },
 }));

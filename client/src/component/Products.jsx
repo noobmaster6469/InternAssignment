@@ -23,8 +23,8 @@ const Products = () => {
   console.log("storeInfo:", storeInfo.name);
   console.log("order:", order);
 
-  const addHandler = (productVariation) => {
-    addToCart(productVariation._id, storeInfo.name);
+  const addHandler = (image, name, price) => {
+    addToCart(image, name, price, storeInfo.name);
   };
 
   return (
@@ -64,7 +64,13 @@ const Products = () => {
             <div className="card-actions mt-4">
               <button
                 className="btn btn-primary w-full"
-                onClick={() => addHandler(product.defaultVariation)}
+                onClick={() =>
+                  addHandler(
+                    product.defaultVariation.image,
+                    product.name,
+                    product.defaultVariation.price
+                  )
+                }
               >
                 Add to Cart
               </button>

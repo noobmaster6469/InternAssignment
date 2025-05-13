@@ -10,10 +10,10 @@ const Description = () => {
   const { variationId, storeName } = useParams();
   const { variations, mainVariation, getVariation, getAllVariation } =
     useVariationStore();
-  const { order, addToCart, setStore, setOrder } = useOrderStore();
+  const { addToCart, setStore, setOrder } = useOrderStore();
 
-  const addHandler = (productVariation) => {
-    addToCart(productVariation, storeInfo.name);
+  const addHandler = (image, name, price) => {
+    addToCart(image, name, price, storeInfo.name);
   };
 
   useEffect(() => {
@@ -70,7 +70,13 @@ const Description = () => {
             <div className="card-actions mt-4">
               <button
                 className="btn btn-primary w-full"
-                onClick={() => addHandler(mainVariation.variation._id)}
+                onClick={() =>
+                  addHandler(
+                    mainVariation.variation.image,
+                    mainVariation.product.name,
+                    mainVariation.variation.price
+                  )
+                }
               >
                 Add to Cart
               </button>
@@ -113,11 +119,16 @@ const Description = () => {
                 <div className="mt-2 text-sm text-gray-600">
                   <span className="text-gray-400">Size:</span> {vari.size}
                 </div>
-                <h1>{vari._id}</h1>
                 <div className="card-actions mt-4">
                   <button
                     className="btn btn-primary w-full"
-                    onClick={() => addHandler(vari._id)}
+                    onClick={() =>
+                      addHandler(
+                        vari.image,
+                        mainVariation.product.name,
+                        vari.price
+                      )
+                    }
                   >
                     Add to Cart
                   </button>
@@ -128,7 +139,6 @@ const Description = () => {
         </div>
       </div>
     </>
-    // <h1>hello</h1>
   );
 };
 
