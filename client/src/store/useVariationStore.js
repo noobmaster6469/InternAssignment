@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios";
 
 export const useVariationStore = create((set) => ({
   variations: [],
-  mainVariation: [],
+  mainVariation: null,
   getVariation: async (variationId) => {
     try {
       const response = await axiosInstance.post(`/variation/${variationId}`);

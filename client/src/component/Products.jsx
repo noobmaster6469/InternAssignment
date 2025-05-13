@@ -2,20 +2,30 @@ import React, { useEffect } from "react";
 import { useProductStore } from "../store/useProductStore";
 import { useStoreStore } from "../store/useStoreStore.js";
 import { useCategoryStore } from "../store/useCategoryStore.js";
+import { useOrderStore } from "../store/useOrderStore.js";
 import { Link } from "react-router-dom";
 
 const Products = () => {
   const { products, getProducts } = useProductStore();
   const { activeCategory } = useCategoryStore();
   const { storeInfo } = useStoreStore();
+  const { order, addToCart, setStore, setOrder } = useOrderStore();
 
   useEffect(() => {
     if (storeInfo?._id) {
       getProducts(storeInfo._id, activeCategory);
     }
-  }, [storeInfo, getProducts, activeCategory]);
+    setStore(storeInfo.name);
+    setOrder(storeInfo.name);
+  }, [storeInfo, getProducts, activeCategory, setOrder]);
   console.log("Products:", products);
   console.log("activeCategory:", activeCategory);
+  console.log("storeInfo:", storeInfo.name);
+  console.log("order:", order);
+
+  const addHandler = (productVariation) => {
+    addToCart(productVariation._id, storeInfo.name);
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
@@ -26,7 +36,7 @@ const Products = () => {
         >
           <figure>
             <Link
-              to={`/store/${storeInfo._id}/${product.defaultVariation._id}`}
+              to={`/store/${storeInfo.name}/${product.defaultVariation._id}`}
             >
               <img
                 src={`http://localhost:3000/uploads/${product.defaultVariation.image}`}
@@ -52,7 +62,12 @@ const Products = () => {
               {product.defaultVariation.size}
             </div>
             <div className="card-actions mt-4">
-              <button className="btn btn-primary w-full">Add to Cart</button>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => addHandler(product.defaultVariation)}
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>
